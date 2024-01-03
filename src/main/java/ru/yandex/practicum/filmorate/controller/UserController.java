@@ -23,6 +23,7 @@ public class UserController {
     @PostMapping("/users")
     public User createUser(@Valid @RequestBody User user) {
         user.setId(users.size() + 1);
+        user.setName(user.getName());
         users.add(user);
         return user;
 
