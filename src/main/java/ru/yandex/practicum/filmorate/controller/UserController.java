@@ -16,9 +16,10 @@ public class UserController {
     private List<User> users = new ArrayList<>();
 
     @GetMapping("/users")
-    public List<User> userAll(){
+    public List<User> userAll() {
         return users;
     }
+
     @PostMapping("/users")
     public User createUser(@Valid @RequestBody User user) {
         users.add(user);
@@ -28,7 +29,7 @@ public class UserController {
 
     @PutMapping("/users/{id}")
     public User newUsers(@PathVariable int id, @Valid @RequestBody User user) {
-        if (users.isEmpty() || users.get(id)== null) {
+        if (users.isEmpty() || users.get(id) == null) {
             throw new ValidationException("The list Films is empty or not not this element");
         } else {
             users.set(id, user);

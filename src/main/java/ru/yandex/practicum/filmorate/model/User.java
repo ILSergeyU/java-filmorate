@@ -15,9 +15,10 @@ public class User {
     private int id;
     @Email(message = "The email don't be empty and must contain char @")
     private String email;
-    @NotBlank(message = "The login must not be empty and contains a space character" )
+    @NotBlank(message = "The login must not be empty and contains a space character")
     private String login;
     private String name;
+
     @Past(message = "The birthday must not be in the future")
     private LocalDate birthday;
 
