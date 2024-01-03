@@ -37,7 +37,7 @@ public class Film {
     }
 
     public void setReleaseDate(LocalDate releaseDate) {
-        LocalDate localDate = LocalDate.of(1900 - 1985, 12, 28);
+        LocalDate localDate = LocalDate.of(1985, 12, 28);
         if (releaseDate == null || releaseDate.isBefore(localDate)) {
             throw new ValidationException("The release date film earlier 28 december 1985");
         }
