@@ -37,8 +37,8 @@ class UserValidationTest {
     }
 
     @Test
-    void testName(){
-            String name = "Barac";
+    void testName() {
+        String name = "Barac";
 
         user.setName(name);
         assertEquals(name, user.getName());

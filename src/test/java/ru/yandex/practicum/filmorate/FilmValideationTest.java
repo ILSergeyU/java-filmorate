@@ -1,13 +1,13 @@
 package ru.yandex.practicum.filmorate;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.Duration;
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FilmValideationTest {
     Film film = new Film();
@@ -57,7 +57,7 @@ class FilmValideationTest {
 
     @Test
     void testDuration() {
-            Duration duration = Duration.ofNanos(-1000);
+        Duration duration = Duration.ofNanos(-1000);
         System.out.println(duration);
         try {
             film.setDuration(duration);
