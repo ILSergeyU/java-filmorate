@@ -21,6 +21,7 @@ public class FilmController {
 
     @PostMapping("/films")
     public Film createFilm(@Valid @RequestBody Film film) {
+        film.setId(films.size() + 1);
         films.add(film);
         return film;
 
