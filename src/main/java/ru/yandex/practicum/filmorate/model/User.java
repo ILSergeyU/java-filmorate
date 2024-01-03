@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Slf4j
 @Data
 public class User {
-    private int id;
+    private int id = 1;
     @Email(message = "The email don't be empty and must contain char @")
     private String email;
     @NotBlank(message = "The login must not be empty and contains a space character")
