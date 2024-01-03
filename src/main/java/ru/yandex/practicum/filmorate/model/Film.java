@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 
-import javax.validation.constraints.*;
-import java.time.Duration;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 /**
@@ -26,10 +26,10 @@ public class Film {
     private String description;
     private LocalDate releaseDate;
 
-    private Duration duration;
+    private int duration;
 
-    public void setDuration(Duration duration) {
-        if (duration.isNegative()) {
+    public void setDuration(int duration) {
+        if (duration <= 0) {
             throw new ValidationException("The film Duration  must be positive");
 
         }
