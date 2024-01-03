@@ -26,12 +26,12 @@ public class FilmController {
 
     }
 
-    @PutMapping("/films/{id}")
-    public Film newFilms(@PathVariable int id, @Valid @RequestBody Film film) {
-        if (films.isEmpty() || films.get(id) == null) {
+    @PutMapping("/films")
+    public Film newFilms(@Valid @RequestBody Film film) {
+        if (films.isEmpty() || films.get(film.getId() - 1) == null) {
             throw new ValidationException("The list Films is empty or not not this element");
         } else {
-            films.set(id, film);
+            films.set(film.getId() - 1, film);
         }
         return film;
     }

@@ -28,12 +28,12 @@ public class UserController {
 
     }
 
-    @PutMapping("/users/{id}")
-    public User newUsers(@PathVariable int id, @Valid @RequestBody User user) {
-        if (users.isEmpty() || users.get(id) == null) {
-            throw new ValidationException("The list Films is empty or not not this element");
+    @PutMapping("/users")
+    public User newUsers(@Valid @RequestBody User user) {
+        if (users.isEmpty() || users.get(user.getId() - 1) == null) {
+            throw new ValidationException("The list Films is empty or not this element");
         } else {
-            users.set(id, user);
+            users.set(user.getId() - 1, user);
         }
         return user;
     }
