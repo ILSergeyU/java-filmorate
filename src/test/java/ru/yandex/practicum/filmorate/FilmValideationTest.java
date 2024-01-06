@@ -1,14 +1,29 @@
 package ru.yandex.practicum.filmorate;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.time.LocalDate;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FilmValideationTest {
+    private Validator validator;
+
+    @BeforeEach
+    void setFilm() {
+        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+        validator = validatorFactory.getValidator();
+    }
+
     Film film = new Film();
 
     @Test
@@ -18,27 +33,51 @@ class FilmValideationTest {
         film.setName(nameFilm);
         assertEquals(nameFilm, film.getName());
 
-        try {
-            film.setName("");
-        } catch (ValidationException exception) {
-            assertEquals("The name of the film dosen't be is empty", exception.getMessage());
+        Set<ConstraintViolation<Film>> violations = validator.validate(film);
+        assertEquals(0, violations.size());
+
+        String nameBad = null;
+        film.setName(nameBad);
+        Set<ConstraintViolation<Film>> violationsBadName = validator.validate(film);
+        boolean foundErrorMessage = false;
+        for (ConstraintViolation<Film> violation : violationsBadName) {
+            if ("The name of the film dosen't be is empty".equals(violation.getMessage())) {
+                foundErrorMessage = true;
+                break;
+            }
         }
+        assertTrue(foundErrorMessage);
     }
 
     @Test
     void testRelesaseDescription() {
-        String descriptionFilm = "Film good";
+        String descriptionGoodFilm = "Film";
+        // Понять почему по умолчанию проверяет и поле name!!!
+        String nameFilm = "Avengers";
+        film.setName(nameFilm);
 
-        film.setDescription(descriptionFilm);
-        assertEquals(descriptionFilm, film.getDescription());
+        film.setDescription(descriptionGoodFilm);
+        assertEquals(film.getDescription(), descriptionGoodFilm);
 
-        try {
-            film.setDescription("11111111111111111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111");
-        } catch (ValidationException exception) {
-            assertEquals("The maximum length is  200 characters", exception.getMessage());
+        Set<ConstraintViolation<Film>> violations = validator.validate(film);
+        assertEquals(0, violations.size());
+
+
+        String descriptionBadFilm = "A".repeat(201);
+        film.setDescription(descriptionBadFilm);
+        Set<ConstraintViolation<Film>> badDescription = validator.validate(film);
+
+        boolean foundErrorMessage = false;
+
+        for (ConstraintViolation<Film> violation : badDescription) {
+            if ("The maximum length is  200 characters".equals(violation.getMessage())) {
+                System.out.println("Зашол");
+                foundErrorMessage = true;
+                break;
+            }
         }
+        assertTrue(foundErrorMessage);
+
     }
 
     @Test
@@ -50,18 +89,18 @@ class FilmValideationTest {
         } catch (ValidationException exception) {
             assertEquals("The release date film earlier 28 december 1985", exception.getMessage());
         }
-
-
     }
 
     @Test
     void testDuration() {
-        int duration = -1;
-        System.out.println(duration);
+        int durationPositiv = 20;
+        film.setDuration(durationPositiv);
+        assertEquals(durationPositiv, film.getDuration());
         try {
+            int duration = -1;
             film.setDuration(duration);
         } catch (ValidationException exception) {
-            assertEquals("The film Duration  must be positive", exception.getMessage());
+            assertEquals("The film duration  must be positive", exception.getMessage());
         }
     }
 }

@@ -30,7 +30,7 @@ public class Film {
 
     public void setDuration(int duration) {
         if (duration <= 0) {
-            throw new ValidationException("The film Duration  must be positive");
+            throw new ValidationException("The film duration  must be positive");
 
         }
         this.duration = duration;
@@ -44,4 +44,14 @@ public class Film {
         this.releaseDate = releaseDate;
     }
 
+    @Override
+    public String toString() {
+        return "Film{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", releaseDate=" + releaseDate +
+                ", duration=" + duration +
+                '}';
+    }
 }

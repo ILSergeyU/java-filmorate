@@ -1,45 +1,65 @@
 package ru.yandex.practicum.filmorate;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.time.LocalDate;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class UserValidationTest {
+
+    private Validator validator;
+
+    @BeforeEach
+    void setUser() {
+        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+        validator = validatorFactory.getValidator();
+    }
 
     User user = new User();
 
     @Test
     void testEmailDont() {
-
-        String email = "Lort@mail.ru";
+        String email = "Murmansk.axsel@yandex.ru";
         user.setEmail(email);
+// Почему идет проверка так же и логина
+        String login = "MotorMan)";
+        user.setLogin(login);
+
         assertEquals(email, user.getEmail());
 
-        try {
-            String emailEmpty = "";
-            user.setEmail(emailEmpty);
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+        assertEquals(0, violations.size());
 
-        } catch (ValidationException exception) {
-            assertEquals("The email don't be empty and must contain char @", exception.getMessage());
+        String emailEmpty = "";
+        user.setEmail(emailEmpty);
+        String emailNotChar = "Lortmail.ru";
+        user.setEmail(emailNotChar);
+        Set<ConstraintViolation<User>> violationsEmail = validator.validate(user);
+        boolean foundErrorMessage = false;
+        for (ConstraintViolation<User> violation : violationsEmail) {
+            if ("The email don't be empty and must contain char @".equals(violation.getMessage())) {
+
+                foundErrorMessage = true;
+                break;
+            }
         }
+        assertTrue(foundErrorMessage);
 
-        try {
-            String emailNotChar = "Lort@mail.ru";
-            user.setEmail(emailNotChar);
 
-        } catch (ValidationException exception) {
-            assertEquals("The email don't be empty and must contain char @", exception.getMessage());
-        }
     }
 
     @Test
     void testName() {
         String name = "Barac";
-
         user.setName(name);
         assertEquals(name, user.getName());
     }
@@ -51,36 +71,52 @@ class UserValidationTest {
 
         assertEquals(login, user.getLogin());
 
-        try {
-            String loginEmpty = "";
-            user.setLogin(loginEmpty);
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+        assertEquals(0, violations.size());
 
-        } catch (ValidationException exception) {
-            assertEquals("The login must not be empty and contains a space character", exception.getMessage());
+        String loginEmpty = null;
+        user.setLogin(loginEmpty);
+
+        Set<ConstraintViolation<User>> violationSet = validator.validate(user);
+        boolean foundErrorMessage = false;
+        for (ConstraintViolation<User> violation : violationSet) {
+            if ("The login must not be empty and contains a space character".equals(violation.getMessage())) {
+
+                foundErrorMessage = true;
+                break;
+            }
         }
+        assertTrue(foundErrorMessage);
 
-        try {
-            String loginWathSpace = "Motor Man)";
-            user.setLogin(loginWathSpace);
 
-        } catch (ValidationException exception) {
-            assertEquals("The login must not be empty and contains a space character", exception.getMessage());
-        }
     }
 
     @Test
     void testBirthday() {
         LocalDate birthday = LocalDate.of(1986, 12, 01);
         user.setBirthday(birthday);
+        String login = "MotorMan)";
+        user.setLogin(login);
+        String name = "Barac";
+        user.setName(name);
         assertEquals(birthday, user.getBirthday());
 
-        try {
-            LocalDate birthdayFuture = LocalDate.of(2030, 03, 05);
-            user.setBirthday(birthdayFuture);
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+        assertEquals(0, violations.size());
+        LocalDate nowDate = LocalDate.now();
+        LocalDate birsdayBad = nowDate.plusYears(5);
+        user.setBirthday(birsdayBad);
 
-        } catch (ValidationException exception) {
-            assertEquals("The birthday must not be in the future", exception.getMessage());
+        Set<ConstraintViolation<User>> violationSet = validator.validate(user);
+        boolean foundErrorMessage = false;
+        for (ConstraintViolation<User> violation : violationSet) {
+            if ("The birthday must not be in the future".equals(violation.getMessage())) {
+                foundErrorMessage = true;
+                break;
+            }
         }
+        assertTrue(foundErrorMessage);
 
     }
+
 }
