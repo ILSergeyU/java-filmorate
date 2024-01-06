@@ -30,14 +30,15 @@ public class User {
         }
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", login='" + login + '\'' +
-                ", name='" + name + '\'' +
-                ", birthday=" + birthday +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "User{" +
+//                ", login='" + login + '\n' +
+//                "id=" + id +
+//                ", email='" + email + '\n' +
+//                ", login='" + login + '\n' +
+//                ", name='" + name + '\n' +
+//                ", birthday=" + birthday +
+//                '}';
+//    }
 }

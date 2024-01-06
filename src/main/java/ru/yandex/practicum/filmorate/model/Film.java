@@ -44,14 +44,14 @@ public class Film {
         this.releaseDate = releaseDate;
     }
 
-    @Override
-    public String toString() {
-        return "Film{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", releaseDate=" + releaseDate +
-                ", duration=" + duration +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Film{" +
+//                "id=" + id +
+//                ", name='" + name + '\'' +
+//                ", description='" + description + '\'' +
+//                ", releaseDate=" + releaseDate +
+//                ", duration=" + duration +
+//                '}';
+//    }
 }
