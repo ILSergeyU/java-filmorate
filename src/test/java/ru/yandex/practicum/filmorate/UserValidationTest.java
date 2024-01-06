@@ -27,6 +27,8 @@ class UserValidationTest {
 
     @Test
     void testEmailDont() {
+        String name = "Barac";
+        user.setName(name);
         String email = "Murmansk.axsel@yandex.ru";
         user.setEmail(email);
 // Почему идет проверка так же и логина
@@ -65,7 +67,10 @@ class UserValidationTest {
 
     @Test
     void testLoginNotEmpty() {
-        String login = "MotorMan)";
+
+        String name = "Barac";
+        user.setName(name);
+        String login = "Motor";
         user.setLogin(login);
 
         assertEquals(login, user.getLogin());
@@ -80,7 +85,6 @@ class UserValidationTest {
         boolean foundErrorMessage = false;
         for (ConstraintViolation<User> violation : violationSet) {
             if ("The login must not be empty and contains a space character".equals(violation.getMessage())) {
-
                 foundErrorMessage = true;
                 break;
             }
