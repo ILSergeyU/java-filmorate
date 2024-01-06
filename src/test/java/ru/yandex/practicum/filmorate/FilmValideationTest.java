@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FilmValideationTest {
+    Film film = new Film();
     private Validator validator;
 
     @BeforeEach
@@ -23,8 +24,6 @@ class FilmValideationTest {
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
     }
-
-    Film film = new Film();
 
     @Test
     void testFilmName() {

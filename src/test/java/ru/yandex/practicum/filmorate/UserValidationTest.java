@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class UserValidationTest {
 
+    User user = new User();
     private Validator validator;
 
     @BeforeEach
@@ -23,8 +24,6 @@ class UserValidationTest {
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
     }
-
-    User user = new User();
 
     @Test
     void testEmailDont() {
