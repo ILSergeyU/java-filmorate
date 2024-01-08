@@ -6,27 +6,30 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import javax.validation.Valid;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Slf4j
 @RestController
+@RequestMapping("/users")
 public class UserController {
-    private List<User> users = new LinkedList<>();
+    private Map<Integer, User> users = new HashMap<>();
 
-    @GetMapping("/users")
+    @GetMapping
     public List<User> userAll() {
-        return users;
+        return new ArrayList<>(users.values());
     }
 
-    @PostMapping("/users")
+    @PostMapping
     public User createUser(@Valid @RequestBody User user) {
         try {
             user.setId(users.size() + 1);
             user.setName(user.getName());
             log.info("Пользователь:", user);
-            users.add(user);
+            users.put(users.size() + 1, user);
         } catch (ValidationException e) {
             log.error("Ошибка валидации: {}", e.getMessage());
         }
@@ -35,29 +38,13 @@ public class UserController {
     }
 
 
-    //    @PutMapping("/users")
-//    public User update(@Valid @RequestBody User user) {
-//        try {
-//            int index = user.getId() - 1;
-//            if (index >= 0 && index < users.size()) {
-//                User existingUser = users.get(index);
-//                users.set(index, user);
-//                log.info("Пользователь {} с id:{} обновлен ", user, index);
-//            } else {
-//                throw new ValidationException("Invalid user ID");
-//            }
-//        } catch (ValidationException e) {
-//            log.error("Ошибка валидации: {}", e.getMessage());
-//        }
-//        return user;
-//    }
-    @PutMapping("/users")
+    @PutMapping
     public User newUsers(@Valid @RequestBody User user) {
-        if (users.isEmpty() || users.get(user.getId() - 1) == null) {
+        if (users.isEmpty() || users.get(user.getId() /*- 1*/) == null) {
             throw new ValidationException("The list Films is empty or not this element");
         } else {
-            users.set(user.getId() - 1, user);
-            log.info("Пользователь {} с id:{} обновлен ", user, user.getId() - 1);
+            users.put(user.getId() /*- 1*/, user);
+            log.info("Пользователь {} с id:{} обновлен ", user, user.getId() /*- 1*/);
         }
         return user;
     }

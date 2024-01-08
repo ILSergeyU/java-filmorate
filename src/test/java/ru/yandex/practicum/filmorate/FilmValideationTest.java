@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import javax.validation.ConstraintViolation;
@@ -27,9 +26,16 @@ class FilmValideationTest {
 
     @Test
     void testFilmName() {
-        String nameFilm = "Avengers";
 
+        String nameFilm = "Avengers";
         film.setName(nameFilm);
+
+        String descriptionGoodFilm = "Film";
+        film.setDescription(descriptionGoodFilm);
+
+        int positiveDuration = 90;
+        film.setDuration(positiveDuration);
+
         assertEquals(nameFilm, film.getName());
 
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
@@ -51,11 +57,15 @@ class FilmValideationTest {
     @Test
     void testRelesaseDescription() {
         String descriptionGoodFilm = "Film";
+        film.setDescription(descriptionGoodFilm);
+
         // ѕон€ть почему по умолчанию провер€ет и поле name!!!
         String nameFilm = "Avengers";
         film.setName(nameFilm);
 
-        film.setDescription(descriptionGoodFilm);
+        int positiveDuration = 90;
+        film.setDuration(positiveDuration);
+
         assertEquals(film.getDescription(), descriptionGoodFilm);
 
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
@@ -79,27 +89,74 @@ class FilmValideationTest {
 
     }
 
-    @Test
-    void testRealeseDate() {
-        LocalDate filmDate = LocalDate.of(1891, 11, 12);
 
-        try {
-            film.setReleaseDate(filmDate);
-        } catch (ValidationException exception) {
-            assertEquals("The release date film earlier 28 december 1985", exception.getMessage());
+    @Test
+    void testReleaseDateAfter1895() {
+
+        String descriptionGoodFilm = "Film";
+        // ѕон€ть почему по умолчанию провер€ет и поле name!!!
+        String nameFilm = "Avengers";
+
+        film.setName(nameFilm);
+        film.setDescription(descriptionGoodFilm);
+
+        int positiveDuration = 90;
+        film.setDuration(positiveDuration);
+
+        // ”становим дату релиза после 28 декабр€ 1895 года
+        LocalDate dateAfter1895 = LocalDate.of(1896, 1, 1);
+        film.setReleaseDate(dateAfter1895);
+
+        Set<ConstraintViolation<Film>> violations = validator.validate(film);
+        assertEquals(0, violations.size());
+
+        // ”становим дату релиза до 28 декабр€ 1895 года
+        LocalDate dateBefore1895 = LocalDate.of(1895, 12, 27);
+        film.setReleaseDate(dateBefore1895);
+
+        Set<ConstraintViolation<Film>> before1895Violations = validator.validate(film);
+
+        boolean foundErrorMessage = false;
+        for (ConstraintViolation<Film> violation : before1895Violations) {
+            if ("The release date film earlier 28 december 1985".equals(violation.getMessage())) {
+                foundErrorMessage = true;
+                break;
+            }
         }
+        assertTrue(foundErrorMessage);
     }
 
     @Test
-    void testDuration() {
-        int durationPositiv = 20;
-        film.setDuration(durationPositiv);
-        assertEquals(durationPositiv, film.getDuration());
-        try {
-            int duration = -1;
-            film.setDuration(duration);
-        } catch (ValidationException exception) {
-            assertEquals("The film duration  must be positive", exception.getMessage());
+    void testPositiveDuration() {
+        String descriptionGoodFilm = "Film";
+        // ѕон€ть почему по умолчанию провер€ет и поле name!!!
+        String nameFilm = "Avengers";
+        film.setName(nameFilm);
+
+        film.setDescription(descriptionGoodFilm);
+
+        // ”становим положительную длительность
+        int positiveDuration = 90;
+        film.setDuration(positiveDuration);
+
+        Set<ConstraintViolation<Film>> violations = validator.validate(film);
+        assertEquals(0, violations.size());
+
+        // ”становим отрицательную длительность
+        int negativeDuration = -100;
+        film.setDuration(negativeDuration);
+
+        Set<ConstraintViolation<Film>> negativeViolations = validator.validate(film);
+
+        boolean foundErrorMessage = false;
+        for (ConstraintViolation<Film> violation : negativeViolations) {
+            if ("The film duration  must be positive".equals(violation.getMessage())) {
+                foundErrorMessage = true;
+                break;
+            }
         }
+        assertTrue(foundErrorMessage);
     }
 }
+
+

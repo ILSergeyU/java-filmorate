@@ -6,48 +6,47 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import javax.validation.Valid;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
+@RequestMapping("/films")
 public class FilmController {
 
-    private List<Film> films = new LinkedList<>();
+    private Map<Integer, Film> films = new HashMap<>();
 
-    @GetMapping("/films")
+    @GetMapping
     public List<Film> finAll() {
+        return new ArrayList<>(films.values());
 
-        return films;
     }
 
-    @PostMapping("/films")
+    @PostMapping
     public Film createFilm(@Valid @RequestBody Film film) {
         try {
             film.setId(films.size() + 1);
             film.setReleaseDate(film.getReleaseDate());
-            log.info("Р”РѕР±Р°РІР»РµРЅ С„РёР»СЊРј: {}", film);
-            films.add(film);
-
+            log.info("Добавлен фильм: {}", film);
+            films.put(films.size() + 1, film);
         } catch (ValidationException e) {
-            log.error("РћС€РёР±РєР° РІР°Р»РёРґР°С†РёРё: {}", e.getMessage());
+            log.error("Ошибка валидации: {}", e.getMessage());
         }
         return film;
     }
 
-    @PutMapping("/films")
+    @PutMapping
     public Film update(@Valid @RequestBody Film film) {
-        try {
-            if (films.isEmpty() || films.get(film.getId() - 1) == null) {
-                throw new ValidationException("The list Films is empty or not not this element");
+        if (films.isEmpty() || films.get(film.getId()) == null) {
+            throw new ValidationException("The list Films is empty or not not this element");
 
-            } else {
-                films.set(film.getId() - 1, film);
-                log.info("Р¤РёР»СЊРј {} СЃ id:{} РѕР±РЅРѕРІР»РµРЅ ", film, film.getId());
-            }
-        } catch (ValidationException e) {
-            log.error("РћС€РёР±РєР° РІР°Р»РёРґР°С†РёРё: {}", e.getMessage());
+        } else {
+            films.put(film.getId()/* - 1*/, film);
+            log.info("Фильм {} с id:{} обновлен ", film, film.getId());
         }
         return film;
+
     }
 }

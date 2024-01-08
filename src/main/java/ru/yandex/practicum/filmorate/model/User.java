@@ -33,15 +33,4 @@ public class User {
         }
     }
 
-//    @Override
-//    public String toString() {
-//        return "User{" +
-//                ", login='" + login + '\n' +
-//                "id=" + id +
-//                ", email='" + email + '\n' +
-//                ", login='" + login + '\n' +
-//                ", name='" + name + '\n' +
-//                ", birthday=" + birthday +
-//                '}';
-//    }
 }
