@@ -29,7 +29,7 @@ public class UserController {
         return userStorage.userAll();
     }
 
-//    @RequestParam
+    //    @RequestParam
     @GetMapping("/{id}")// Работает
     public User userById(@PathVariable int id) {
         return userStorage.userById(id);

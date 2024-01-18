@@ -23,6 +23,7 @@ import java.util.Set;
 public class Film implements Comparable<Film> {
 
 
+    Set<Integer> likeFilm;
     private int id;
     @NotBlank(message = "The name of the film dosen't be is empty")
     private String name;
@@ -32,8 +33,6 @@ public class Film implements Comparable<Film> {
     private LocalDate releaseDate;
     @Positive(message = "The film duration  must be positive")
     private int duration;
-    Set<Integer> likeFilm;
-
     private int summLike = likeFilm.size();
 
     public void addLike(Integer id) {
