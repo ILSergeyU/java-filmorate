@@ -59,7 +59,7 @@ class FilmValideationTest {
         String descriptionGoodFilm = "Film";
         film.setDescription(descriptionGoodFilm);
 
-        // ѕон€ть почему по умолчанию провер€ет и поле name!!!
+        // ?????? ?????? ?? ????????? ????????? ? ???? name!!!
         String nameFilm = "Avengers";
         film.setName(nameFilm);
 
@@ -80,7 +80,7 @@ class FilmValideationTest {
 
         for (ConstraintViolation<Film> violation : badDescription) {
             if ("The maximum length is  200 characters".equals(violation.getMessage())) {
-                System.out.println("«ашол");
+                System.out.println("?????");
                 foundErrorMessage = true;
                 break;
             }
@@ -94,7 +94,7 @@ class FilmValideationTest {
     void testReleaseDateAfter1895() {
 
         String descriptionGoodFilm = "Film";
-        // ѕон€ть почему по умолчанию провер€ет и поле name!!!
+        // ?????? ?????? ?? ????????? ????????? ? ???? name!!!
         String nameFilm = "Avengers";
 
         film.setName(nameFilm);
@@ -103,14 +103,14 @@ class FilmValideationTest {
         int positiveDuration = 90;
         film.setDuration(positiveDuration);
 
-        // ”становим дату релиза после 28 декабр€ 1895 года
+        // ????????? ???? ?????? ????? 28 ??????? 1895 ????
         LocalDate dateAfter1895 = LocalDate.of(1896, 1, 1);
         film.setReleaseDate(dateAfter1895);
 
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         assertEquals(0, violations.size());
 
-        // ”становим дату релиза до 28 декабр€ 1895 года
+        // ????????? ???? ?????? ?? 28 ??????? 1895 ????
         LocalDate dateBefore1895 = LocalDate.of(1895, 12, 27);
         film.setReleaseDate(dateBefore1895);
 
@@ -129,20 +129,20 @@ class FilmValideationTest {
     @Test
     void testPositiveDuration() {
         String descriptionGoodFilm = "Film";
-        // ѕон€ть почему по умолчанию провер€ет и поле name!!!
+        // ?????? ?????? ?? ????????? ????????? ? ???? name!!!
         String nameFilm = "Avengers";
         film.setName(nameFilm);
 
         film.setDescription(descriptionGoodFilm);
 
-        // ”становим положительную длительность
+        // ????????? ????????????? ????????????
         int positiveDuration = 90;
         film.setDuration(positiveDuration);
 
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         assertEquals(0, violations.size());
 
-        // ”становим отрицательную длительность
+        // ????????? ????????????? ????????????
         int negativeDuration = -100;
         film.setDuration(negativeDuration);
 

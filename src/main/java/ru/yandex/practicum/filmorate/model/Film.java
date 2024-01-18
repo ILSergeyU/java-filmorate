@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.Set;
 
 /**
  * Film.
@@ -19,7 +20,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Film {
+public class Film implements Comparable<Film> {
 
 
     private int id;
@@ -31,5 +32,31 @@ public class Film {
     private LocalDate releaseDate;
     @Positive(message = "The film duration  must be positive")
     private int duration;
+    Set<Integer> likeFilm;
 
+    private int summLike = likeFilm.size();
+
+    public void addLike(Integer id) {
+        likeFilm.add(id);
+    }
+
+    public void deleteLike(Integer id) {
+        likeFilm.remove(id);
+    }
+
+//    public Integer summLike(){
+//        return likeFilm.size();
+//    }
+
+    @Override
+    public int compareTo(Film like) {
+        if (this.summLike == like.summLike) {
+            return 0;
+        } else if (this.id < like.summLike) {
+            return -1;
+
+        } else {
+            return 1;
+        }
+    }
 }

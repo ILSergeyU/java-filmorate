@@ -8,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
+import java.util.Set;
 
 
 @Slf4j
@@ -25,12 +26,22 @@ public class User {
     @Past(message = "The birthday must not be in the future")
     private LocalDate birthday;
 
+    private Set<Integer> friends;
+
     public void setName(String name) {
         if (name == null || name.isEmpty()) {
             this.name = this.login;
         } else {
             this.name = name;
         }
+    }
+
+    public void addFriendInFriends(Integer id) {
+        friends.add(id);
+    }
+
+    public void deleteFriendWithFriends(Integer id) {
+        friends.remove(id);
     }
 
 }

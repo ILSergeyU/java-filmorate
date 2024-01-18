@@ -1,51 +1,70 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 @Slf4j
+@AllArgsConstructor
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private Map<Integer, User> users = new HashMap<>();
+
+    @Autowired
+    private final UserStorage userStorage;
+    @Autowired
+    private final UserService userService;
+
 
     @GetMapping
     public List<User> userAll() {
-        return new ArrayList<>(users.values());
+        return userStorage.userAll();
     }
 
-    @PostMapping
+//    @RequestParam
+    @GetMapping("/{id}")// Р Р°Р±РѕС‚Р°РµС‚
+    public User userById(@PathVariable int id) {
+        return userStorage.userById(id);
+    }
+
+    @GetMapping("GET /users/{id}/friends")
+    public List<User> hereFriend(@PathVariable int id) {
+        return userService.hereFriend(id);
+    }
+
+    @GetMapping("/{id}/friends/common/{otherId}")
+    public List<User> seeCommonFriends(@PathVariable int id, @PathVariable int friendId) {
+        return userService.seeCommonFriends(id, friendId);
+    }
+
+    @PostMapping// Р Р°Р±РѕС‚Р°РµС‚
     public User createUser(@Valid @RequestBody User user) {
-        try {
-            user.setId(users.size() + 1);
-            user.setName(user.getName());
-            log.info("Пользователь:", user);
-            users.put(users.size() + 1, user);
-        } catch (ValidationException e) {
-            log.error("Ошибка валидации: {}", e.getMessage());
-        }
-        return user;
-
+        return userStorage.createUser(user);
     }
-
 
     @PutMapping
-    public User newUsers(@Valid @RequestBody User user) {
-        if (users.isEmpty() || users.get(user.getId() /*- 1*/) == null) {
-            throw new ValidationException("The list Films is empty or not this element");
-        } else {
-            users.put(user.getId() /*- 1*/, user);
-            log.info("Пользователь {} с id:{} обновлен ", user, user.getId() /*- 1*/);
-        }
-        return user;
+    public User updateUsers(@Valid @RequestBody User user) {
+        return userStorage.updateUsers(user);
+
     }
+
+    @PutMapping("/{id}/friends/{friendId}")
+    public User addFriends(@PathVariable int id, @PathVariable int friendId) {
+        return userService.addFriends(id, friendId);
+
+    }
+
+    @DeleteMapping("/{id}/friends/{friendId}")
+    public User deleteFriengs(@PathVariable int id, @PathVariable int friendId) {
+        return userService.deleteFriengs(id, friendId);
+    }
+
 }
