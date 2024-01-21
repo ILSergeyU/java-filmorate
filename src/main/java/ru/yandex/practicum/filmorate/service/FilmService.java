@@ -13,10 +13,7 @@ import java.util.List;
 
 @Service
 public class FilmService {
-    // Добавление лайка
-// Удаление лайка
-// Вывод 10 наиболее популярных фильмов по количеству лайков.
-// Каждый пользователь может поставить лайк фильму только один раз
+
     private final InMemoryFilmStorage inMemoryFilmStorage;
     private final InMemoryUserStorage inMemoryUserStorage;
 

@@ -13,44 +13,40 @@ import java.util.List;
 @Slf4j
 @Service
 public class UserService {
-// Добавление в друзья
-// Удаление из друзей
-// Вывод списка общих друзей
-
-    private final InMemoryUserStorage inMemoryUserStorage; // Изменить на интерфейс
+    private final InMemoryUserStorage inMemoryUserStorage;
 
     @Autowired
     public UserService(InMemoryUserStorage inMemoryUserStorage) {
         this.inMemoryUserStorage = inMemoryUserStorage;
     }
 
-    public User addFriends(Integer id, Integer friendId) {//Добавить друга
+    public User addFriends(Integer id, Integer friendId) {
         if (findId(id) == true) {
             User firstFriend = getUser(id);
             User secondFriend = getUser(friendId);
             firstFriend.addFriendInFriends(id);
             secondFriend.addFriendInFriends(friendId);
 
-            return inMemoryUserStorage.getUsers().get(id);//Этот пользователь добавлен
+            return inMemoryUserStorage.getUsers().get(id);
 
-        } else return inMemoryUserStorage.getUsers().get(id);//Этот пользователь добавлен
+        } else return inMemoryUserStorage.getUsers().get(id);
 
     }
 
-    public User deleteFriengs(Integer id, Integer friendId) {//Удалить друга
+    public User deleteFriengs(Integer id, Integer friendId) {
         if (findId(id) == false) {
             User firstFriend = getUser(id);
             User secondFriend = getUser(friendId);
             firstFriend.deleteFriendWithFriends(id);
             secondFriend.deleteFriendWithFriends(friendId);
 
-            return inMemoryUserStorage.getUsers().get(id);//Этот удалён из друзей
+            return inMemoryUserStorage.getUsers().get(id);
 
-        } else return inMemoryUserStorage.getUsers().get(id);//Этот удалён из друзей
+        } else return inMemoryUserStorage.getUsers().get(id);
 
     }
 
-    public List<User> seeCommonFriends(Integer id, Integer friendId) { //Вывод списка общих друзей
+    public List<User> seeCommonFriends(Integer id, Integer friendId) {
         if (id <= 0 || friendId <= 0) {
             throw new IncorrectCountException("Присланные значения меньши или равны: 0");
         }
@@ -63,20 +59,12 @@ public class UserService {
             throw new IncorrectCountException("Таких пользователей нет");
         }
 
-        User firstFriend = getUser(id); // inMemoryUserStorage.getUsers().get(id);
+        User firstFriend = getUser(id);
         User secondFriend = getUser(friendId);
 
 
-//        Set<Integer> commonValues = new HashSet<>(firstFriend.getFriends());
-//        commonValues.retainAll(secondFriend.getFriends());
-
         List<User> commonFriends = new ArrayList<>();
-//
-//        for (Integer idFriend :inMemoryUserStorage.getUsers().keySet()) {
-//            if ()
-//            commonFriends.add(inMemoryUserStorage.getUsers().get(idFriend));
-//
-//        }
+
 
         for (Integer firstIdFriend : firstFriend.getFriends()) {
             for (Integer secondIdFriend : secondFriend.getFriends()) {
@@ -89,13 +77,13 @@ public class UserService {
 
     }
 
-    public Boolean findId(Integer id) {//Проверка наличия друга
-        boolean notFriend = true; // пользователя нет
+    public Boolean findId(Integer id) {
+        boolean notFriend = true;
         User firstFriend = getUser(id);
-        //firstFriend.contains(); - попробывать проверку сделать так
+
         for (Integer friend : firstFriend.getFriends()) {
             if (friend == id) {
-                notFriend = false; // пользователь есть
+                notFriend = false;
                 break;
             }
         }
