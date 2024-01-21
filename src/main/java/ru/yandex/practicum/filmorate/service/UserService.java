@@ -41,6 +41,7 @@ public class UserService {
     }
 
     public User deleteFriengs(Integer id, Integer friendId) {
+
         if (findId(id) == false) {
             User firstFriend = getUser(id);
             User secondFriend = getUser(friendId);
