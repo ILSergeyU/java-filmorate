@@ -9,7 +9,9 @@ import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import javax.validation.Valid;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @AllArgsConstructor
@@ -21,8 +23,6 @@ public class FilmController {
     @Autowired
     private final FilmService filmService;
 
-
-//@RequestParam
 
     @GetMapping
     public List<Film> finAll() {
@@ -56,9 +56,12 @@ public class FilmController {
         return filmService.removeLike(id, userId);
     }
 
-    @GetMapping("/popular?count={count}")
-    public List<Film> seeLiceFilmsTen(@RequestParam(required = false) final Integer count) {
-        return filmService.seeLiceFilmsTen(count);
+    @GetMapping(value = {"popular?count={count}", "popular"})
+    public Collection<Film> topFilms(@RequestParam Optional<Integer> count) {
+        if (count.isPresent()) {
+            return filmService.topFilms(count.get());
+        } else {
+            return filmService.topFilms(10);
+        }
     }
-
 }

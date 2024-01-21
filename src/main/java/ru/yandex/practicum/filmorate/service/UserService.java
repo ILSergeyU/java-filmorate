@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.IncorrectCountException;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
@@ -21,11 +22,17 @@ public class UserService {
     }
 
     public User addFriends(Integer id, Integer friendId) {
+        if (id <= 0 || friendId <= 0) {
+            throw new ValidationException("ID отрицательное или равно 0");
+        }
+        if (id == null || friendId == null) {
+            throw new ValidationException("ID равно null");
+        }
         if (findId(id) == true) {
             User firstFriend = getUser(id);
             User secondFriend = getUser(friendId);
-            firstFriend.addFriendInFriends(id);
-            secondFriend.addFriendInFriends(friendId);
+            firstFriend.addFriendInFriends(friendId);
+            secondFriend.addFriendInFriends(id);
 
             return inMemoryUserStorage.getUsers().get(id);
 
@@ -55,17 +62,13 @@ public class UserService {
             throw new IncorrectCountException("Переданные пустые значения");
         }
 
-        if (inMemoryUserStorage.getUsers().containsKey(id) || inMemoryUserStorage.getUsers().containsKey(friendId)) {
+        if (!inMemoryUserStorage.getUsers().containsKey(id) || !inMemoryUserStorage.getUsers().containsKey(friendId)) {
             throw new IncorrectCountException("Таких пользователей нет");
         }
 
         User firstFriend = getUser(id);
         User secondFriend = getUser(friendId);
-
-
         List<User> commonFriends = new ArrayList<>();
-
-
         for (Integer firstIdFriend : firstFriend.getFriends()) {
             for (Integer secondIdFriend : secondFriend.getFriends()) {
                 if (firstIdFriend == secondIdFriend) {
@@ -92,9 +95,12 @@ public class UserService {
 
     public List<User> hereFriend(Integer id) {
         List<User> hereFriends = new ArrayList<>();
+        log.info("Id пользователя: {} ", id);
+
         for (Integer idUsers : inMemoryUserStorage.getUsers().get(id).getFriends()) {
             hereFriends.add(inMemoryUserStorage.getUsers().get(idUsers));
         }
+
         return hereFriends;
     }
 

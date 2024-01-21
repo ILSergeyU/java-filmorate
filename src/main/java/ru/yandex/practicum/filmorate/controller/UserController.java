@@ -29,15 +29,14 @@ public class UserController {
         return userStorage.userAll();
     }
 
-    //    @RequestParam
     @GetMapping("/{id}")// Работает
     public User userById(@PathVariable int id) {
 
         return userStorage.userById(id);
     }
 
-    @GetMapping("GET /users/{id}/friends")
-    public List<User> hereFriend(@PathVariable int id) {
+    @GetMapping("/{id}/friends")
+    public List<User> hereFriend(@PathVariable Integer id) {
         return userService.hereFriend(id);
     }
 

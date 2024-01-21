@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.exception.ValidationExpensionFilms;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.util.ArrayList;
@@ -25,12 +26,10 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public Film movieById(int id) {
-//        if (films.containsKey(id)== true){
-//         log.info("Find id: {}", films.get(id));
+        if (!films.containsKey(id)) {
+            throw new ValidationExpensionFilms("Нет фильма по такому Id");
+        }
         return films.get(id);
-//        }else
-//          log.error("This is Id not here: {}", films.get(id));
-//        return null;
 
 
     }
@@ -51,6 +50,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public Film update(Film film) {
         if (films.isEmpty() || films.get(film.getId()) == null) {
+            System.out.println("Film with id " + film.getId() + " not found in the collection.");
             throw new ValidationException("The list Films is empty or not not this element");
 
         } else {
@@ -58,7 +58,6 @@ public class InMemoryFilmStorage implements FilmStorage {
             log.info("Film {} updated with id: {}", film, film.getId());
         }
         return film;
-
     }
 
 }

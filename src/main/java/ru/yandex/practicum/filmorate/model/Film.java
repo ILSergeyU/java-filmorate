@@ -11,6 +11,7 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Film.
@@ -22,8 +23,6 @@ import java.util.Set;
 @NoArgsConstructor
 public class Film implements Comparable<Film> {
 
-
-    Set<Integer> likeFilm;
     private int id;
     @NotBlank(message = "The name of the film dosen't be is empty") // Название фильма не должно быть пустым
     private String name;
@@ -33,6 +32,7 @@ public class Film implements Comparable<Film> {
     private LocalDate releaseDate;
     @Positive(message = "The film duration  must be positive")
     private int duration;
+    Set<Integer> likeFilm = new TreeSet<>();
     private int summLike = likeFilm.size();
 
     public void addLike(Integer id) {
@@ -43,9 +43,6 @@ public class Film implements Comparable<Film> {
         likeFilm.remove(id);
     }
 
-//    public Integer summLike(){
-//        return likeFilm.size();
-//    }
 
     @Override
     public int compareTo(Film like) {

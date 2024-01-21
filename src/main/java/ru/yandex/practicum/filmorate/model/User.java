@@ -9,6 +9,7 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.TreeSet;
 
 
 @Slf4j
@@ -26,7 +27,7 @@ public class User {
     @Past(message = "The birthday must not be in the future")
     private LocalDate birthday;
 
-    private Set<Integer> friends;
+    private Set<Integer> friends = new TreeSet<>();
 
     public void setName(String name) {
         if (name == null || name.isEmpty()) {

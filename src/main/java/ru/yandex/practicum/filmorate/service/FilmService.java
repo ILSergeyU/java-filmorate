@@ -7,17 +7,14 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
 import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Service
 public class FilmService {
 
     private final InMemoryFilmStorage inMemoryFilmStorage;
     private final InMemoryUserStorage inMemoryUserStorage;
-
-
 
 
     @Autowired
@@ -42,34 +39,10 @@ public class FilmService {
         return film.getLikeFilm().size();
     }
 
-    public List<Film> seeLiceFilmsTen(Integer films) {
-        inMemoryFilmStorage.getFilms().values();
-        List<Film> likeFilms = new ArrayList<>();
-        List<Film> likeFilmsTen = new ArrayList<>();
-        for (Film likeFilm : inMemoryFilmStorage.getFilms().values()) {
-            likeFilms.add(likeFilm);
-        }
-        Collections.sort(likeFilms);
-        if (films == null) {
-            if (likeFilms.size() <= 10) {
-                return likeFilms;
-            } else {
-                for (int i = 0; i < 10; i++) {
-                    likeFilmsTen.add(likeFilms.get(i));
-                }
-            }
-
-            return likeFilmsTen;
-        } else if (films != null) {
-            if (likeFilms.size() <= films) {
-                return likeFilms;
-            } else {
-                for (int i = 0; i < films; i++) {
-                    likeFilmsTen.add(likeFilms.get(i));
-                }
-            }
-            return likeFilmsTen;
-        }
-        return likeFilms;
+    public Collection<Film> topFilms(Integer count) {
+        return inMemoryFilmStorage.getFilms().values().stream()
+                .sorted((film1, film2) -> film2.getLikeFilm().size() - film1.getLikeFilm().size())
+                .limit(count)
+                .collect(Collectors.toList());
     }
 }
