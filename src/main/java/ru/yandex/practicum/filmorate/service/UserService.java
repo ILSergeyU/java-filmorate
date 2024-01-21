@@ -35,7 +35,6 @@ public class UserService {
 
         } else return inMemoryUserStorage.getUsers().get(id);//Этот пользователь добавлен
 
-
     }
 
     public User deleteFriengs(Integer id, Integer friendId) {//Удалить друга
