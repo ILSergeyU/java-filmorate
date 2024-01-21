@@ -56,5 +56,9 @@ public class FilmController {
         return filmService.removeLike(id, userId);
     }
 
+    @GetMapping("/popular?count={count}")
+    public List<Film> seeLiceFilmsTen(@RequestParam(required = false) final Integer count) {
+        return filmService.seeLiceFilmsTen(count);
+    }
 
 }

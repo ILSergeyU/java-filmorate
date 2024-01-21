@@ -16,7 +16,7 @@ import java.util.Map;
 @Data
 public class InMemoryFilmStorage implements FilmStorage {
 
-    private Map<Integer, Film> films = new HashMap<>();
+    private Map<Integer, Film> films = new HashMap<>(); // Изменить на интерфейс
 
     @Override
     public List<Film> finAll() {
@@ -25,7 +25,14 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public Film movieById(int id) {
+//        if (films.containsKey(id)== true){
+//         log.info("Find id: {}", films.get(id));
         return films.get(id);
+//        }else
+//          log.error("This is Id not here: {}", films.get(id));
+//        return null;
+
+
     }
 
     @Override

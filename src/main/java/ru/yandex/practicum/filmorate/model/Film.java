@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ru.yandex.practicum.filmorate.anotaciy.ReleaseDateAfter1895;
+import ru.yandex.practicum.filmorate.annotation.ReleaseDateAfter1895;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
@@ -25,7 +25,7 @@ public class Film implements Comparable<Film> {
 
     Set<Integer> likeFilm;
     private int id;
-    @NotBlank(message = "The name of the film dosen't be is empty")
+    @NotBlank(message = "The name of the film dosen't be is empty") // Название фильма не должно быть пустым
     private String name;
     @Size(max = 200, message = "The maximum length is  200 characters")
     private String description;

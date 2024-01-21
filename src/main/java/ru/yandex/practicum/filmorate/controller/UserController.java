@@ -32,6 +32,7 @@ public class UserController {
     //    @RequestParam
     @GetMapping("/{id}")// Работает
     public User userById(@PathVariable int id) {
+
         return userStorage.userById(id);
     }
 
@@ -41,8 +42,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")
-    public List<User> seeCommonFriends(@PathVariable int id, @PathVariable int friendId) {
-        return userService.seeCommonFriends(id, friendId);
+    public List<User> seeCommonFriends(@PathVariable int id, @PathVariable int otherId) {
+        return userService.seeCommonFriends(id, otherId);
     }
 
     @PostMapping// Работает
@@ -66,5 +67,6 @@ public class UserController {
     public User deleteFriengs(@PathVariable int id, @PathVariable int friendId) {
         return userService.deleteFriengs(id, friendId);
     }
+
 
 }

@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.storage;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.exception.IncorrectCountException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -25,7 +26,12 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public User userById(int id) {
-        return users.get(id);
+        if (users.containsKey(id) == true) {
+            log.info("Пользователь найден: {} ", users.get(id));
+            return users.get(id);
+        } else
+            log.error("Пользователя c Id: {} нет!", id);
+        throw new IncorrectCountException("Пользователя c введенным Id нет");
     }
 
     @Override
