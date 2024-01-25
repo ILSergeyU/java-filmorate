@@ -21,7 +21,7 @@ import java.util.TreeSet;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Film implements Comparable<Film> {
+public class Film {
 
     private int id;
     @NotBlank(message = "The name of the film dosen't be is empty") // Название фильма не должно быть пустым
@@ -44,15 +44,5 @@ public class Film implements Comparable<Film> {
     }
 
 
-    @Override
-    public int compareTo(Film like) {
-        if (this.summLike == like.summLike) {
-            return 0;
-        } else if (this.id < like.summLike) {
-            return -1;
 
-        } else {
-            return 1;
-        }
-    }
 }

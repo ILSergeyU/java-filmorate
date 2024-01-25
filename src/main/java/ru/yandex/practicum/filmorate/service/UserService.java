@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.IncorrectCountException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +14,29 @@ import java.util.List;
 @Slf4j
 @Service
 public class UserService {
-    private final InMemoryUserStorage inMemoryUserStorage;
+
+    private final UserStorage userStorage;
 
     @Autowired
-    public UserService(InMemoryUserStorage inMemoryUserStorage) {
-        this.inMemoryUserStorage = inMemoryUserStorage;
+    public UserService(UserStorage userStorage) {
+        this.userStorage = userStorage;
+    }
+
+    public List<User> findAllUsers() {
+        log.info("Запрос на получение всех пользователей");
+        return userStorage.findAllUsers();
+    }
+
+    public User findUserById(int id) {
+        return userStorage.findUserById(id);
+    }
+
+    public User createUser(User user) {
+        return userStorage.createUser(user);
+    }
+
+    public User updateUsers(User user) {
+        return userStorage.updateUsers(user);
     }
 
     public User addFriends(Integer id, Integer friendId) {
@@ -34,9 +52,9 @@ public class UserService {
             firstFriend.addFriendInFriends(friendId);
             secondFriend.addFriendInFriends(id);
 
-            return inMemoryUserStorage.getUsers().get(id);
+            return userStorage.getUsers().get(id);
 
-        } else return inMemoryUserStorage.getUsers().get(id);
+        } else return userStorage.getUsers().get(id);
 
     }
 
@@ -48,9 +66,9 @@ public class UserService {
             firstFriend.deleteFriendWithFriends(id);
             secondFriend.deleteFriendWithFriends(friendId);
 
-            return inMemoryUserStorage.getUsers().get(id);
+            return userStorage.getUsers().get(id);
 
-        } else return inMemoryUserStorage.getUsers().get(id);
+        } else return userStorage.getUsers().get(id);
 
     }
 
@@ -63,7 +81,7 @@ public class UserService {
             throw new IncorrectCountException("Переданные пустые значения");
         }
 
-        if (!inMemoryUserStorage.getUsers().containsKey(id) || !inMemoryUserStorage.getUsers().containsKey(friendId)) {
+        if (!userStorage.getUsers().containsKey(id) || !userStorage.getUsers().containsKey(friendId)) {
             throw new IncorrectCountException("Таких пользователей нет");
         }
 
@@ -73,7 +91,7 @@ public class UserService {
         for (Integer firstIdFriend : firstFriend.getFriends()) {
             for (Integer secondIdFriend : secondFriend.getFriends()) {
                 if (firstIdFriend == secondIdFriend) {
-                    commonFriends.add(inMemoryUserStorage.getUsers().get(firstIdFriend));
+                    commonFriends.add(userStorage.getUsers().get(firstIdFriend));
                 }
             }
         }
@@ -94,19 +112,19 @@ public class UserService {
         return notFriend;
     }
 
-    public List<User> hereFriend(Integer id) {
+    public List<User> getListOfFriends(Integer id) {
         List<User> hereFriends = new ArrayList<>();
         log.info("Id пользователя: {} ", id);
 
-        for (Integer idUsers : inMemoryUserStorage.getUsers().get(id).getFriends()) {
-            hereFriends.add(inMemoryUserStorage.getUsers().get(idUsers));
+        for (Integer idUsers : userStorage.getUsers().get(id).getFriends()) {
+            hereFriends.add(userStorage.getUsers().get(idUsers));
         }
 
         return hereFriends;
     }
 
     public User getUser(Integer id) {
-        return inMemoryUserStorage.getUsers().get(id);
+        return userStorage.getUsers().get(id);
     }
 
 }

@@ -16,17 +16,15 @@ import java.util.Map;
 @Component
 @Data
 public class InMemoryUserStorage implements UserStorage {
-
     private Map<Integer, User> users = new HashMap<>();
 
-
     @Override
-    public List<User> userAll() {
+    public List<User> findAllUsers() {
         return new ArrayList<>(users.values());
     }
 
     @Override
-    public User userById(int id) {
+    public User findUserById(int id) {
         if (users.containsKey(id) == true) {
             log.info("Пользователь найден: {} ", users.get(id));
             return users.get(id);
@@ -39,7 +37,6 @@ public class InMemoryUserStorage implements UserStorage {
     public User createUser(User user) {
         try {
             user.setId(users.size() + 1);
-            user.setName(user.getName());
             log.info("User created: {}", user);
             users.put(users.size() + 1, user);
         } catch (ValidationException e) {

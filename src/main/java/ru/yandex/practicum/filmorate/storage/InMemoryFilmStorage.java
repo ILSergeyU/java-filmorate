@@ -17,18 +17,20 @@ import java.util.Map;
 @Data
 public class InMemoryFilmStorage implements FilmStorage {
 
-    private Map<Integer, Film> films = new HashMap<>(); // Изменить на интерфейс
+    private Map<Integer, Film> films = new HashMap<>();
 
     @Override
-    public List<Film> finAll() {
+    public List<Film> findAll() {
+        log.info("Запрос на получение списка всех фильмов");
         return new ArrayList<>(films.values());
     }
 
     @Override
-    public Film movieById(int id) {
+    public Film findFilmById(int id) {
         if (!films.containsKey(id)) {
             throw new ValidationExpensionFilms("Нет фильма по такому Id");
         }
+        log.info("Запрос на получение фильма по Id");
         return films.get(id);
 
 
@@ -48,7 +50,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Film update(Film film) {
+    public Film updateFilm(Film film) {
         if (films.isEmpty() || films.get(film.getId()) == null) {
             System.out.println("Film with id " + film.getId() + " not found in the collection.");
             throw new ValidationException("The list Films is empty or not not this element");
