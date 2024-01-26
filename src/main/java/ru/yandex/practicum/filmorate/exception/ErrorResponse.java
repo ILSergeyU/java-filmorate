@@ -1,14 +1,13 @@
 package ru.yandex.practicum.filmorate.exception;
 
-import javax.swing.*;
-
 public class ErrorResponse {
     //Название ошибки
     String error;
     //Описание ошибки
-    Spring description;
+    String description;
 
-    public ErrorResponse(String error, Spring description) {
+
+    public ErrorResponse(String error, String description) {
         this.error = error;
         this.description = description;
     }
@@ -17,7 +16,7 @@ public class ErrorResponse {
         return error;
     }
 
-    public Spring getDescription() {
+    public String getDescription() {
         return description;
     }
 }

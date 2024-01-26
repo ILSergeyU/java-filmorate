@@ -2,7 +2,7 @@ package ru.yandex.practicum.filmorate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.IncorrectCountException;
+import ru.yandex.practicum.filmorate.exception.IncorrectNumberException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
@@ -51,10 +51,10 @@ public class FilmService {
 
     public Integer removeLike(Integer filmId, Integer userId) {
         if (filmId <= 0 || userId <= 0) {
-            throw new IncorrectCountException("Не может быть меньше или равно 0");
+            throw new IncorrectNumberException("Не может быть меньше или равно 0");
         }
         if (filmId == null || userId == null) {
-            throw new IncorrectCountException("Не может быть пустым");
+            throw new IncorrectNumberException("Не может быть пустым");
         }
         Film film = filmStorage.getFilms().get(filmId);
         User user = userStorage.getUsers().get(userId);

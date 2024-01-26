@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  postgresql:
+    image: postgres:14.8
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: "dblocalincodocker"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "root"
+      expose:
+         -5433
+      ports:
+#        -5432-5432
+        -5433:5432
+#    volumes:
+#        - db_volume:/var/lib/postgresql/data
+#

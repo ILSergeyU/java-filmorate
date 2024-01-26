@@ -3,8 +3,8 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.IncorrectCountException;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.exception.IncorrectNumberException;
+import ru.yandex.practicum.filmorate.exception.ValidationExceptionUser;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
@@ -41,10 +41,10 @@ public class UserService {
 
     public User addFriends(Integer id, Integer friendId) {
         if (id <= 0 || friendId <= 0) {
-            throw new ValidationException("ID отрицательное или равно 0");
+            throw new ValidationExceptionUser("ID отрицательное или равно 0");
         }
         if (id == null || friendId == null) {
-            throw new ValidationException("ID равно null");
+            throw new ValidationExceptionUser("ID равно null");
         }
         if (findId(id) == true) {
             User firstFriend = getUser(id);
@@ -74,15 +74,15 @@ public class UserService {
 
     public List<User> seeCommonFriends(Integer id, Integer friendId) {
         if (id <= 0 || friendId <= 0) {
-            throw new IncorrectCountException("Присланные значения меньши или равны: 0");
+            throw new IncorrectNumberException("Присланные значения меньши или равны: 0");
         }
 
         if (id == null || friendId == null) {
-            throw new IncorrectCountException("Переданные пустые значения");
+            throw new IncorrectNumberException("Переданные пустые значения");
         }
 
         if (!userStorage.getUsers().containsKey(id) || !userStorage.getUsers().containsKey(friendId)) {
-            throw new IncorrectCountException("Таких пользователей нет");
+            throw new IncorrectNumberException("Таких пользователей нет");
         }
 
         User firstFriend = getUser(id);

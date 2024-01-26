@@ -3,8 +3,8 @@ package ru.yandex.practicum.filmorate.storage;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
-import ru.yandex.practicum.filmorate.exception.ValidationExpensionFilms;
+import ru.yandex.practicum.filmorate.exception.ValidationExceptionFilms;
+import ru.yandex.practicum.filmorate.exception.ValidationExceptionUser;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public Film findFilmById(int id) {
         if (!films.containsKey(id)) {
-            throw new ValidationExpensionFilms("Нет фильма по такому Id");
+            throw new ValidationExceptionFilms("Нет фильма по такому Id");
         }
         log.info("Запрос на получение фильма по Id");
         return films.get(id);
@@ -43,7 +43,7 @@ public class InMemoryFilmStorage implements FilmStorage {
             film.setReleaseDate(film.getReleaseDate());
             log.info("Film created: {}", film);
             films.put(films.size() + 1, film);
-        } catch (ValidationException e) {
+        } catch (ValidationExceptionUser e) {
             log.error("Film creation error: {}", e.getMessage());
         }
         return film;
@@ -53,7 +53,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     public Film updateFilm(Film film) {
         if (films.isEmpty() || films.get(film.getId()) == null) {
             System.out.println("Film with id " + film.getId() + " not found in the collection.");
-            throw new ValidationException("The list Films is empty or not not this element");
+            throw new ValidationExceptionUser("The list Films is empty or not not this element");
 
         } else {
             films.put(film.getId(), film);
