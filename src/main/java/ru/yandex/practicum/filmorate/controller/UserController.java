@@ -69,5 +69,4 @@ public class UserController {
         return userService.deleteFriengs(id, friendId);
     }
 
-
 }

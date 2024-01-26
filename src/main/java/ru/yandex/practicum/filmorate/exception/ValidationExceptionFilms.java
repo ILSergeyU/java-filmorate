@@ -5,5 +5,4 @@ public class ValidationExceptionFilms extends RuntimeException {
         super(message);
     }
 
-
 }

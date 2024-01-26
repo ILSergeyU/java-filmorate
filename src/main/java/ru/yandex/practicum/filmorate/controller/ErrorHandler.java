@@ -42,5 +42,4 @@ public class ErrorHandler {
         return new ErrorResponse("error", e.getMessage());
     }
 
-
 }

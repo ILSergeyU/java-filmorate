@@ -43,14 +43,12 @@ public class FilmController {
     public Film updateFilm(@Valid @RequestBody Film film) {
         log.info("Обновил фильм: {} ", film);
         return filmService.updateFilm(film);
-
     }
 
     @PutMapping("/{id}/like/{userId}")
     public Integer addingLike(@PathVariable int id, @PathVariable int userId) {
         log.info("Пользователь ставит лайк");
         return filmService.addingLike(id, userId);
-
     }
 
     @DeleteMapping("{id}/like/{userId}")
