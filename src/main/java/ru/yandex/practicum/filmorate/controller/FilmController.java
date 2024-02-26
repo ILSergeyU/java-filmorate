@@ -8,9 +8,8 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
 import javax.validation.Valid;
+import javax.validation.ValidationException;
 import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @AllArgsConstructor
@@ -18,11 +17,12 @@ import java.util.Optional;
 @RequestMapping("/films")
 public class FilmController {
     @Autowired
+
     private final FilmService filmService;
 
 
     @GetMapping
-    public List<Film> findAll() {
+    public Collection<Film> findAll() {
         return filmService.findAll();
     }
 
@@ -33,7 +33,6 @@ public class FilmController {
     }
 
     @PostMapping
-
     public Film createFilm(@Valid @RequestBody Film film) {
         log.info("Создал фильм: {} ", film);
         return filmService.createFilm(film);
@@ -46,24 +45,23 @@ public class FilmController {
     }
 
     @PutMapping("/{id}/like/{userId}")
-    public Integer addingLike(@PathVariable int id, @PathVariable int userId) {
+    public void addingLike(@PathVariable int id, @PathVariable int userId) {
         log.info("Пользователь ставит лайк");
-        return filmService.addingLike(id, userId);
+        filmService.addingLike(id, userId);
     }
 
     @DeleteMapping("{id}/like/{userId}")
-    public Integer removeLike(@PathVariable int id, @PathVariable int userId) {
+    public void removeLike(@PathVariable int id, @PathVariable int userId) {
+        if (id <= 0 || userId <= 0) {
+            throw new ValidationException("Один из пользователей не найден");
+        }
         log.info("Пользователь удалил лайк");
-        return filmService.removeLike(id, userId);
+//        return filmService.removeLike(id, userId);
+        filmService.removeLike(id, userId);
     }
 
-    @GetMapping(value = {"popular?count={count}", "popular"})
-    public Collection<Film> topFilms(@RequestParam Optional<Integer> count) {
-        log.info("Сортировка фильмов");
-        if (count.isPresent()) {
-            return filmService.topFilms(count.get());
-        } else {
-            return filmService.topFilms(10);
-        }
+    @GetMapping("/popular")
+    public Iterable<Film> getPopularFilms(@RequestParam(defaultValue = "10") int count) {
+        return filmService.getPopularFilms(count);
     }
 }
