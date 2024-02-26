@@ -25,21 +25,17 @@ import java.util.TreeSet;
 @NoArgsConstructor
 public class Film {
 
+    Set<Integer> likeFilm = new TreeSet<>();
     private int id;
-
     @NotBlank(message = "The name of the film dosen't be is empty") // Название фильма не должно быть пустым
     private String name;
-
     @Size(max = 200, message = "The maximum length is  200 characters")
     private String description;
-
     @ReleaseDateAfter1895(message = "The release date film earlier 28 december 1985")
     private LocalDate releaseDate;
-
     @NotNull(message = "У фильма должна быть указана продолжительность")
     @Positive(message = "The film duration  must be positive")
     private Integer duration;
-    Set<Integer> likeFilm = new TreeSet<>();
     private int summLike = likeFilm.size();
 
     private Mpa mpa;
