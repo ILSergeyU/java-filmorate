@@ -1,9 +1,7 @@
 package ru.yandex.practicum.filmorate.exception;
 
 public class ErrorResponse {
-    //Название ошибки
     String error;
-    //Описание ошибки
     String description;
 
 

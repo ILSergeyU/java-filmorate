@@ -37,12 +37,4 @@ public class User {
         }
     }
 
-    public void addFriendInFriends(Integer id) {
-        friends.add(id);
-    }
-
-    public void deleteFriendWithFriends(Integer id) {
-        friends.remove(id);
-    }
-
 }

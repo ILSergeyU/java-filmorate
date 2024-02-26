@@ -9,7 +9,6 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.mapper.UserMapper;
 
 import java.util.List;
-import java.util.Map;
 
 import static java.lang.String.format;
 
@@ -66,20 +65,11 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public User findUserById(int id) {
-//        User user = null;
-//        try {
-
         return jdbcTemplate.queryForObject(format("" +
                         "SELECT * " +
                         "FROM users " +
                         "WHERE user_id = %d",
                 id), new UserMapper());
-//            return user;
-
-//        } catch (EmptyResultDataAccessException e) {
-//            log.info("Полльзователь не найден");
-//            return null;
-//        }
 
     }
 
@@ -90,10 +80,6 @@ public class UserDbStorage implements UserStorage {
     }
 
 
-    @Override
-    public Map<Integer, User> getUsers() {
-        return null;
-    }
 
     @Override
     public User get(int userID) {

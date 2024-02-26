@@ -19,14 +19,14 @@ public class MpaDbService implements MpaService {
 
     @Override
     public Mpa get(int mpaID) throws MpaNotFoundException {
-        if (mpaID > (int) mpaID) {
+        if (mpaID > mpaID) {
             throw new IllegalArgumentException("mpaID должен быть типа INTEGER");
         }
-        if (!mpaDao.contains((int) mpaID)) {
+        if (!mpaDao.contains(mpaID)) {
             log.warn("Не удалось вернуть рейтинг MPA: {}.", String.format(MPA_NOT_FOUND, mpaID));
             throw new MpaNotFoundException(String.format(MPA_NOT_FOUND, mpaID));
         }
-        return mpaDao.get((int) mpaID);
+        return mpaDao.get(mpaID);
     }
 
     @Override

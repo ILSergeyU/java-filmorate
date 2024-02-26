@@ -14,7 +14,7 @@ public interface FriendsStorage {
 
     boolean contains(int fromUserID, int toUserID);
 
-    public Friends get(int fromUserID, int toUserID);
+     Friends get(int fromUserID, int toUserID);
 
 }
 

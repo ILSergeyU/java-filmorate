@@ -5,7 +5,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.FriendshipAlreadyExistsException;
-import ru.yandex.practicum.filmorate.exception.IncorrectNumberException;
 import ru.yandex.practicum.filmorate.exception.dao.friends.FriendshipNotFoundException;
 import ru.yandex.practicum.filmorate.exception.user.UserLogicException;
 import ru.yandex.practicum.filmorate.exception.user.UserNotFoundException;
@@ -13,7 +12,6 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.dao.friendship.FriendsStorage;
 import ru.yandex.practicum.filmorate.storage.dao.user.UserStorage;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -67,45 +65,6 @@ public class UserService {
         friendsStorage.delete(friendID, userID);
     }
 
-    public List<User> seeCommonFriends(Integer id, Integer friendId) {
-        if (id <= 0 || friendId <= 0) {
-            throw new IncorrectNumberException("Присланные значения меньши или равны: 0");
-        }
-
-        if (id == null || friendId == null) {
-            throw new IncorrectNumberException("Переданные пустые значения");
-        }
-
-        if (!userStorage.getUsers().containsKey(id) || !userStorage.getUsers().containsKey(friendId)) {
-            throw new IncorrectNumberException("Таких пользователей нет");
-        }
-
-        User firstFriend = getUser(id);
-        User secondFriend = getUser(friendId);
-        List<User> commonFriends = new ArrayList<>();
-        for (Integer firstIdFriend : firstFriend.getFriends()) {
-            for (Integer secondIdFriend : secondFriend.getFriends()) {
-                if (firstIdFriend == secondIdFriend) {
-                    commonFriends.add(userStorage.getUsers().get(firstIdFriend));
-                }
-            }
-        }
-        return commonFriends;
-
-    }
-
-    public Boolean findId(Integer id) {
-        boolean notFriend = true;
-        User firstFriend = getUser(id);
-
-        for (Integer friend : firstFriend.getFriends()) {
-            if (friend == id) {
-                notFriend = false;
-                break;
-            }
-        }
-        return notFriend;
-    }
 
     public List<User> getListOfFriends(Integer id) {
         if (!userStorage.contains(id)) {
@@ -118,11 +77,6 @@ public class UserService {
                 .collect(Collectors.toList());
         log.trace("Возвращён список друзей: {}.", friends);
         return friends;
-    }
-
-
-    public User getUser(Integer id) {
-        return userStorage.getUsers().get(id);
     }
 
 
