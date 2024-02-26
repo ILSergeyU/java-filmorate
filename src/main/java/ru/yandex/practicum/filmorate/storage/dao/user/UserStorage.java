@@ -17,7 +17,7 @@ public interface UserStorage {
 
     Map<Integer, User> getUsers();
 
-    boolean contains(int userID);
+     boolean contains(int userID);
 
     User get(int userID);
 

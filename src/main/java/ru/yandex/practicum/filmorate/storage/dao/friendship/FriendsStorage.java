@@ -6,7 +6,7 @@ import java.util.Collection;
 
 public interface FriendsStorage {
 
-    void add(int fromUserID, int toUserID, boolean isMutual);
+        void add(int fromUserID, int toUserID, boolean isMutual);
 
     void delete(int fromUserID, int toUserID);
 

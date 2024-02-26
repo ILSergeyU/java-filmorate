@@ -173,7 +173,6 @@ public class UserService {
             throw new UserLogicException(String.format(UNABLE_FRIENDS_AMONG_THEMSELVES, userID));
         }
     }
-
     private void checkFriendToDelete(Integer userID, Integer friendID) {
         log.info("Зашли в метод checkFriendToDelete");
         log.debug("checkFriendToDelete({}, {}).", userID, friendID);

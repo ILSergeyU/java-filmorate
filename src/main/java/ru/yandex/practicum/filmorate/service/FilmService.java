@@ -43,6 +43,7 @@ public class FilmService {
     private final GenreDao genreDao;
 
 
+
     public Film createFilm(Film film) {
         checkFilmToAdd(film);
         Film result = filmStorage.createFilm(film);
@@ -60,7 +61,6 @@ public class FilmService {
         result.setMpa(mpaDao.get(result.getMpa().getId()));
         return result;
     }
-
     public Collection<Film> findAll() {
         var films = filmStorage.getAll();
         for (Film film : films) {
@@ -129,7 +129,6 @@ public class FilmService {
             throw new LikeAlreadyExistsException(String.format(LIKE_ALREADY_EXISTS, filmID, userID));
         }
     }
-
     public Collection<Film> getPopularFilms(int count) {
         log.debug("getPopularFilms({}).", count);
         List<Film> popularFilms = filmStorage.findAll().stream()
@@ -139,7 +138,6 @@ public class FilmService {
         log.trace("Возвращены популярные фильмы: {}.", popularFilms);
         return popularFilms;
     }
-
     private int likeCompare(Film film, Film otherFilm) {
         return Integer.compare(likeDao.count(otherFilm.getId()), likeDao.count(film.getId()));
     }
@@ -184,7 +182,6 @@ public class FilmService {
             throw new LikeNotFoundException(String.format(LIKE_NOT_FOUND, filmID, userID));
         }
     }
-
     private void checkFilmToUpdate(Film film) {
         log.debug("checkFilmToUpdate({}).", film);
         String msg = "Не удалось обновить фильм: {}.";
