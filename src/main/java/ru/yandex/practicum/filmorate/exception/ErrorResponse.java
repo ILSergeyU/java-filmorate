@@ -6,7 +6,6 @@ public class ErrorResponse {
     //Описание ошибки
     String description;
 
-
     public ErrorResponse(String error, String description) {
         this.error = error;
         this.description = description;
