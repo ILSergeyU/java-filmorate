@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage;
+package ru.yandex.practicum.filmorate.storage.member;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.IncorrectNumberException;
 import ru.yandex.practicum.filmorate.exception.ValidationExceptionUser;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.dao.user.UserStorage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,6 +23,18 @@ public class InMemoryUserStorage implements UserStorage {
     public List<User> findAllUsers() {
         return new ArrayList<>(users.values());
     }
+
+    @Override
+    public boolean contains(int userID) {
+        return false;
+    }
+
+    @Override
+    public User get(int userID) {
+        return null;
+    }
+
+
 
     @Override
     public User findUserById(int id) {

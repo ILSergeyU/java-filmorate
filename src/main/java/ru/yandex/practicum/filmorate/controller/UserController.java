@@ -8,6 +8,7 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
 import javax.validation.Valid;
+import javax.validation.ValidationException;
 import java.util.List;
 
 
@@ -17,9 +18,9 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
+
     @Autowired
     private final UserService userService;
-
 
     @GetMapping
     public List<User> findAllUsers() {
@@ -40,9 +41,9 @@ public class UserController {
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")
-    public List<User> seeCommonFriends(@PathVariable int id, @PathVariable int otherId) {
+    public Iterable<User> seeCommonFriends(@PathVariable int id, @PathVariable int otherId) {
         log.info("Получение списка общих друзей у пользователей: {}, {}  ", id, otherId);
-        return userService.seeCommonFriends(id, otherId);
+        return userService.getCommonFriends(id, otherId);
     }
 
     @PostMapping// Работает
@@ -58,15 +59,18 @@ public class UserController {
     }
 
     @PutMapping("/{id}/friends/{friendId}")
-    public User addFriends(@PathVariable int id, @PathVariable int friendId) {
+    public void addFriends(@PathVariable int id, @PathVariable int friendId) {
+        if (id <= 0 || friendId <= 0) {
+            throw new ValidationException("Один из пользователей не найден");
+        }
         log.info("Пользователи добавляют друг друга в друзья {} , {}", id, friendId);
-        return userService.addFriends(id, friendId);
+        userService.addFriend(id, friendId);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
-    public User deleteFriengs(@PathVariable int id, @PathVariable int friendId) {
+    public void deleteFriengs(@PathVariable int id, @PathVariable int friendId) {
         log.info("Пользователи удаляют друг друга из друзей {} , {}", id, friendId);
-        return userService.deleteFriengs(id, friendId);
+        userService.deleteFriend(id, friendId);
     }
 
 }

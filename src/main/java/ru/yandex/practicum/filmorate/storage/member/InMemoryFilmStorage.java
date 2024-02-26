@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage;
+package ru.yandex.practicum.filmorate.storage.member;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -6,11 +6,10 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.ValidationExceptionFilms;
 import ru.yandex.practicum.filmorate.exception.ValidationExceptionUser;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Genre;
+import ru.yandex.practicum.filmorate.storage.dao.film.FilmStorage;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Component
@@ -37,6 +36,23 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
+    public void addGenres(int filmID, Set<Genre> genres) {
+
+    }
+
+    @Override
+    public void updateGenres(int filmID, Set<Genre> genres) {
+
+    }
+
+    @Override
+    public Set<Genre> getGenres(int filmID) {
+        return null;
+    }
+
+
+
+    @Override
     public Film createFilm(Film film) {
         try {
             film.setId(films.size() + 1);
@@ -60,6 +76,11 @@ public class InMemoryFilmStorage implements FilmStorage {
             log.info("Film {} updated with id: {}", film, film.getId());
         }
         return film;
+    }
+
+    @Override
+    public void delete(int id) {
+
     }
 
 }
