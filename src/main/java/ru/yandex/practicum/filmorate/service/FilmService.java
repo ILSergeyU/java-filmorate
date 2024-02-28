@@ -92,26 +92,8 @@ public class FilmService {
     public void removeLike(Integer filmId, Integer userId) {
         checkLikeToDelete(filmId, userId);
         likeDao.delete(filmId, userId);
-        /*    if (filmId <= 0 || userId <= 0) {
-            throw new IncorrectNumberException("Не может быть меньше или равно 0");
-        }
-        if (filmId == null || userId == null) {
-            throw new IncorrectNumberException("Не может быть пустым");
-        }
-        Film film = filmStorage.getFilms().get(filmId);
-        User user = userStorage.getUsers().get(userId);
 
-        film.deleteLike(user.getId());
-        return film.getLikeFilm().size();*/
     }
-
-
-   /* public Collection<Film> topFilms(Integer count) {
-        return filmStorage.().values().stream()
-                .sorted((film1, film2) -> film2.getLikeFilm().size() - film1.getLikeFilm().size())
-                .limit(count)
-                .collect(Collectors.toList());
-    }*/
 
     private void checkLikeToAdd(int filmID, int userID) {
         log.debug("checkLikeToAdd({}, {}).", filmID, userID);

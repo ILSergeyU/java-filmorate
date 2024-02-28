@@ -47,4 +47,13 @@ public class Film {
     private Set<Genre> genres = new HashSet<>();
 
 
+    // Конструктор с параметрами
+    public Film(int id, String name, String description, int duration, LocalDate releaseDate, Mpa mpa) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.duration = duration;
+        this.releaseDate = releaseDate;
+        this.mpa = mpa;
+    }
 }
